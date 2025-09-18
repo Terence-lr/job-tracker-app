@@ -486,6 +486,33 @@ body {
   border-left: 4px solid #c62828;
 }
 
+.error-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.retry-btn {
+  background: #c62828;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s ease;
+}
+
+.retry-btn:hover:not(:disabled) {
+  background: #b71c1c;
+}
+
+.retry-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
 .success-message {
   background: #e8f5e8;
   color: #2e7d32;

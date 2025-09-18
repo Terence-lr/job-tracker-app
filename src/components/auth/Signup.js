@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { auth, verifyFirebaseConfig } from '../../firebase/config';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,15 @@ const Signup = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
+  const [retryCount, setRetryCount] = useState(0);
   const { signup } = useAuth();
+
+  // Verify Firebase configuration on component mount
+  useEffect(() => {
+    console.log('🔍 SIGNUP COMPONENT - Verifying Firebase configuration...');
+    const configStatus = verifyFirebaseConfig();
+    console.log('🔍 SIGNUP COMPONENT - Config verification result:', configStatus);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -99,6 +108,14 @@ const Signup = () => {
     return isValid;
   };
 
+  // Retry function for failed signup attempts
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1);
+    setError('');
+    setSuccess('');
+    handleSubmit({ preventDefault: () => {} });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -119,13 +136,24 @@ const Signup = () => {
         displayName: formData.displayName 
       });
       
+      // Log Firebase auth object before attempting signup
+      console.log('🔥 Firebase auth object:', auth);
+      console.log('🔥 Firebase config:', auth.app.options);
+      console.log('🔥 Auth domain:', auth.app.options.authDomain);
+      console.log('🔥 Project ID:', auth.app.options.projectId);
+      
       await signup(formData.email, formData.password, formData.displayName);
       
       setSuccess('Account created successfully! Redirecting to dashboard...');
       console.log('✅ Account creation successful');
       
     } catch (error) {
-      console.error('❌ Signup failed:', error);
+      console.error('❌ SIGNUP FAILED - DETAILED ERROR INFO:');
+      console.error('Error object:', error);
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      console.error('Full error details:', JSON.stringify(error, null, 2));
       
       let errorMessage = '';
       
@@ -149,8 +177,17 @@ const Signup = () => {
         case 'auth/too-many-requests':
           errorMessage = 'Too many failed attempts. Please try again later.';
           break;
+        case 'auth/invalid-api-key':
+          errorMessage = 'Invalid API key. Please contact support.';
+          break;
+        case 'auth/app-not-authorized':
+          errorMessage = 'App not authorized. Please contact support.';
+          break;
+        case 'auth/quota-exceeded':
+          errorMessage = 'Service quota exceeded. Please try again later.';
+          break;
         default:
-          errorMessage = `Account creation failed: ${error.message}`;
+          errorMessage = `Account creation failed: ${error.message} (Code: ${error.code})`;
       }
       
       setError(errorMessage);
@@ -169,7 +206,19 @@ const Signup = () => {
 
         {error && (
           <div className="error-message">
-            {error}
+            <div className="error-content">
+              {error}
+              {retryCount < 3 && (
+                <button 
+                  type="button" 
+                  onClick={handleRetry}
+                  className="retry-btn"
+                  disabled={loading}
+                >
+                  Try Again ({3 - retryCount} attempts left)
+                </button>
+              )}
+            </div>
           </div>
         )}
 

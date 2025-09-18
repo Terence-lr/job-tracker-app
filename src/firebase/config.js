@@ -26,4 +26,30 @@ export const auth = getAuth(app);
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
 
+// Debug function to verify Firebase configuration
+export const verifyFirebaseConfig = () => {
+  console.log('🔍 FIREBASE CONFIG VERIFICATION:');
+  console.log('Project ID:', firebaseConfig.projectId);
+  console.log('Auth Domain:', firebaseConfig.authDomain);
+  console.log('API Key present:', !!firebaseConfig.apiKey);
+  console.log('App ID present:', !!firebaseConfig.appId);
+  console.log('Storage Bucket:', firebaseConfig.storageBucket);
+  console.log('Messaging Sender ID:', firebaseConfig.messagingSenderId);
+  console.log('Auth object initialized:', !!auth);
+  console.log('Firestore object initialized:', !!db);
+  
+  // Check if we're in production or development
+  console.log('Environment:', process.env.NODE_ENV);
+  console.log('Current URL:', window.location.href);
+  
+  return {
+    projectId: firebaseConfig.projectId,
+    authDomain: firebaseConfig.authDomain,
+    hasApiKey: !!firebaseConfig.apiKey,
+    hasAppId: !!firebaseConfig.appId,
+    authInitialized: !!auth,
+    dbInitialized: !!db
+  };
+};
+
 export default app;
