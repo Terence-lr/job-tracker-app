@@ -30,10 +30,39 @@ const Login = () => {
     try {
       setError('');
       setLoading(true);
+      console.log('🔐 Attempting to login...', { email: formData.email });
       await login(formData.email, formData.password);
+      console.log('✅ Login successful');
     } catch (error) {
-      setError('Failed to log in. Please check your credentials.');
-      console.error('Login error:', error);
+      console.error('❌ Login failed:', error);
+      
+      let errorMessage = '';
+      
+      // Handle specific Firebase error codes
+      switch (error.code) {
+        case 'auth/user-not-found':
+          errorMessage = 'No account found with this email address.';
+          break;
+        case 'auth/wrong-password':
+          errorMessage = 'Incorrect password. Please try again.';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'Please enter a valid email address.';
+          break;
+        case 'auth/user-disabled':
+          errorMessage = 'This account has been disabled. Please contact support.';
+          break;
+        case 'auth/too-many-requests':
+          errorMessage = 'Too many failed attempts. Please try again later.';
+          break;
+        case 'auth/network-request-failed':
+          errorMessage = 'Network error. Please check your internet connection and try again.';
+          break;
+        default:
+          errorMessage = `Login failed: ${error.message}`;
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

@@ -486,6 +486,83 @@ body {
   border-left: 4px solid #c62828;
 }
 
+.success-message {
+  background: #e8f5e8;
+  color: #2e7d32;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  border-left: 4px solid #2e7d32;
+}
+
+.field-error {
+  color: #c62828;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.auth-form .form-group input.error {
+  border-color: #c62828;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
+}
+
+/* Password Strength Indicator */
+.password-strength {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.strength-bar {
+  flex: 1;
+  height: 4px;
+  background: #e1e5e9;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.strength-0, .strength-1, .strength-2 {
+  background: #c62828;
+  width: 33%;
+}
+
+.strength-3, .strength-4 {
+  background: #f57c00;
+  width: 66%;
+}
+
+.strength-5, .strength-6 {
+  background: #2e7d32;
+  width: 100%;
+}
+
+.strength-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 50px;
+}
+
+.strength-0, .strength-1, .strength-2 {
+  color: #c62828;
+}
+
+.strength-3, .strength-4 {
+  color: #f57c00;
+}
+
+.strength-5, .strength-6 {
+  color: #2e7d32;
+}
+
 /* Dashboard Styles */
 .dashboard {
   min-height: 100vh;
