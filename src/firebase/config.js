@@ -13,7 +13,7 @@ const firebaseConfig = {
   projectId: "job-tracker-saas",
   storageBucket: "job-tracker-saas.firebasestorage.app",
   messagingSenderId: "324920266160",
-  appId: "1:324920266160:web:04971e2e35aa5cf701da75",
+  appId: "1:324920266160:web:04971e235aa5cf701da75",
   measurementId: "G-CV61MY2M84"
 };
 
