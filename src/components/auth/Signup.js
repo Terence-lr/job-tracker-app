@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { auth, verifyFirebaseConfig } from '../../firebase/config';
+import ConfigTest from '../ConfigTest';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -198,6 +199,7 @@ const Signup = () => {
 
   return (
     <div className="auth-container">
+      <ConfigTest />
       <div className="auth-card">
         <div className="auth-header">
           <h2>Create Account</h2>
