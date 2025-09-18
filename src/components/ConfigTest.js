@@ -23,9 +23,6 @@ const ConfigTest = () => {
     };
 
     try {
-      // Test if config is loaded
-      results.configLoaded = !!configInfo;
-      
       // Test auth initialization
       const { auth } = await import('../firebase/config');
       results.authInitialized = !!auth;
@@ -33,6 +30,11 @@ const ConfigTest = () => {
       // Test db initialization
       const { db } = await import('../firebase/config');
       results.dbInitialized = !!db;
+      
+      // Test if config verification function works
+      const { verifyFirebaseConfig } = await import('../firebase/config');
+      const configTest = verifyFirebaseConfig();
+      results.configLoaded = !!(configTest && configTest.projectId);
       
       console.log('🧪 FIREBASE CONNECTIVITY TEST RESULTS:', results);
     } catch (error) {
